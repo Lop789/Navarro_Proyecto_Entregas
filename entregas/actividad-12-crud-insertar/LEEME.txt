@@ -1,0 +1,16 @@
+﻿Actividad 12: Admin, CRUD Insertar
+
+Tablas con insertar y validacion Validator:
+1. administradores: /admini/create -> /admini/index
+2. clientes: /clientes/create -> /clientes/index
+3. productos: /pro/create -> /pro/index
+4. users: /users/create -> /users/index
+5. carrito: /carrito/create -> /carrito/index
+
+En estas tablas no hay formularios con dependencias directas que requieran selects cargados desde otra tabla. Las tablas relacionadas como pedidos y detalles se dejaron fuera segun la consigna.
+
+Entregar en Classroom:
+- Enlace publico del video
+- Enlace publico del proyecto en GitHub
+
+No comprimir.

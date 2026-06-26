@@ -1,0 +1,10 @@
+﻿Actividad 11: Admin, CRUD Listar
+
+Agregar aqui el video o subir esta carpeta a Drive junto con el enlace publico del video.
+
+Rutas para mostrar en el video:
+/admini/index
+/clientes/index
+/pro/index
+/users/index
+/carrito/index
