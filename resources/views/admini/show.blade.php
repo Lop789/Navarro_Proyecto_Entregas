@@ -13,6 +13,7 @@
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th class="px-4 py-3">Id</th>
+              <th class="px-4 py-3">Imagen</th>
               <th class="px-4 py-3">Nombre</th>
               <th class="px-4 py-3">Correo</th>
               <th class="px-4 py-3">Teléfono</th>
@@ -22,6 +23,11 @@
           <tbody>
             <tr class="border-b dark:border-gray-700">
               <th class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $admin->id }}</th>
+              <td class="px-4 py-3">
+                @if($admin->pic)
+                  <img src="{{ asset($admin->pic) }}" alt="Foto de {{ $admin->nombre }}" class="h-20 w-20 rounded object-cover">
+                @endif
+              </td>
               <td class="px-4 py-3">{{ $admin->nombre }} {{ $admin->apellido }}</td>
               <td class="px-4 py-3">{{ $admin->correo }}</td>
               <td class="px-4 py-3">{{ $admin->telefono }}</td>

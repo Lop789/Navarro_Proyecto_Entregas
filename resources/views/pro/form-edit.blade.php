@@ -50,6 +50,18 @@
             class="block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             placeholder="Descripción...">{{ $product->descripcion }}</textarea>
         </div>
+        <div class="sm:col-span-2 grid gap-4 sm:grid-cols-3">
+          @foreach (['pic1' => $product->pic1, 'pic2' => $product->pic2, 'pic3' => $product->pic3] as $name => $pic)
+            <div>
+              <label class="block mb-2 text-sm font-medium dark:text-[#cfeedd]">{{ strtoupper($name) }}</label>
+              @if($pic)
+                <img src="{{ asset($pic) }}" alt="{{ $name }}" class="mb-3 h-24 w-24 rounded object-cover">
+              @endif
+              <input type="file" name="{{ $name }}" accept="image/*"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+          @endforeach
+        </div>
         <div class="w-full">
           <label class="block mb-2 text-sm font-medium dark:text-[#cfeedd]">Estado</label>
           <select name="estado"

@@ -22,6 +22,7 @@
               <th class="px-4 py-3">Session ID</th>
               <th class="px-4 py-3">Creado</th>
               <th class="px-4 py-3">Actualizado</th>
+              <th class="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -31,10 +32,23 @@
                 <td class="px-4 py-3">{{ $carrito->session_id }}</td>
                 <td class="px-4 py-3">{{ $carrito->created_at }}</td>
                 <td class="px-4 py-3">{{ $carrito->updated_at }}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center justify-end gap-4">
+                    <a href="{{ url('/carrito/'.$carrito->id.'/show') }}" class="hover:underline">Mostrar</a>
+                    <a href="{{ url('/carrito/'.$carrito->id.'/edit') }}" class="hover:underline text-blue-500">Editar</a>
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->esMaster())
+                      <form action="{{ url('/carrito/'.$carrito->id) }}" method="POST" onsubmit="return confirm('¿Eliminar?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
+                      </form>
+                    @endif
+                  </div>
+                </td>
               </tr>
             @empty
               <tr>
-                <td class="px-4 py-3" colspan="4">No hay carritos registrados.</td>
+                <td class="px-4 py-3" colspan="5">No hay carritos registrados.</td>
               </tr>
             @endforelse
           </tbody>

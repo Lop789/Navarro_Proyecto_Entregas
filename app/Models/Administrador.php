@@ -1,12 +1,13 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Administrador extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'administradores';
 
@@ -22,6 +23,15 @@ class Administrador extends Authenticatable
         'rol',
         'pic',
         'fecha_registro',
+    ];
+
+    protected $hidden = [
+        'contrasena',
+    ];
+
+    protected $casts = [
+        'estado' => 'boolean',
+        'fecha_registro' => 'date',
     ];
 
     public function getAuthPassword()

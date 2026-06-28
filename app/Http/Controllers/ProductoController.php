@@ -14,9 +14,19 @@ class ProductoController extends Controller
         return view('pro.listado', compact('productos'));
     }
 
+    public function listado()
+    {
+        return $this->index();
+    }
+
     public function create()
     {
         return view('pro.fom');
+    }
+
+    public function formulario()
+    {
+        return view('pro.formulario');
     }
 
     public function store(Request $req)
@@ -74,15 +84,21 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($id);
 
-        $req->validate([
-            'nombre'      => 'required',
-            'categoria'   => 'required',
-            'descripcion' => 'required',
-            'precio'      => 'required',
-            'pic1'        => 'nullable|image',
-            'pic2'        => 'nullable|image',
-            'pic3'        => 'nullable|image',
+        $validator = Validator::make($req->all(), [
+            'nombre'             => 'required',
+            'categoria'          => 'required',
+            'descripcion'        => 'required',
+            'ahorro_kgco2e'      => 'nullable|numeric',
+            'ahorro_agua_litros' => 'nullable|numeric',
+            'precio'             => 'required|numeric',
+            'pic1'               => 'nullable|image',
+            'pic2'               => 'nullable|image',
+            'pic3'               => 'nullable|image',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         $producto->update($req->except(['_token', '_method', 'pic1', 'pic2', 'pic3']));
 

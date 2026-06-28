@@ -19,8 +19,21 @@ class Cliente extends Model
         'pic'
     ];
 
+    protected $hidden = [
+        'contrasena',
+    ];
+
+    protected $casts = [
+        'estado' => 'boolean',
+    ];
+
     use HasFactory;
 
     protected $table = 'clientes';
     public $timestamps = false;
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'cliente_id');
+    }
 }

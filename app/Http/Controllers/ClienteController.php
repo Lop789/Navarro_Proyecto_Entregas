@@ -14,9 +14,19 @@ class ClienteController extends Controller
         return view('clientes.listado', compact('clientes'));
     }
 
+    public function listado()
+    {
+        return $this->index();
+    }
+
     public function create()
     {
         return view('clientes.form');
+    }
+
+    public function formulario()
+    {
+        return view('clientes.formulario');
     }
 
     public function store(Request $req)
@@ -67,16 +77,20 @@ class ClienteController extends Controller
     {
         $client = Cliente::findOrFail($id);
 
-        $req->validate([
+        $validator = Validator::make($req->all(), [
             'nombres'          => 'required',
             'apellido_paterno' => 'required',
             'apellido_materno' => 'required',
             'direccion'        => 'required',
-            'correo'           => 'required',
+            'correo'           => 'required|email|unique:clientes,correo,' . $client->id,
             'estado'           => 'required',
             'contrasena'       => 'required',
             'pic'              => 'nullable|image'
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         $client->nombres          = $req->nombres;
         $client->apellido_paterno = $req->apellido_paterno;

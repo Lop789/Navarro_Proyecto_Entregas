@@ -14,6 +14,13 @@
 
     <div class="rounded-xl border border-[#2b5f53] bg-[#163b38] p-8 shadow-lg w-full">
       <div class="flex flex-col lg:flex-row items-start gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          @foreach ([$p->pic1, $p->pic2, $p->pic3] as $pic)
+            @if($pic)
+              <img src="{{ asset($pic) }}" alt="Imagen de {{ $p->nombre }}" class="h-40 w-40 rounded-lg object-cover">
+            @endif
+          @endforeach
+        </div>
 
         <!-- DATOS -->
         <div class="w-full">

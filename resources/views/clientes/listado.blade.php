@@ -21,6 +21,7 @@
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th class="px-4 py-3">Id</th>
+              <th class="px-4 py-3">Imagen</th>
               <th class="px-4 py-3">Nombre</th>
               <th class="px-4 py-3">Correo</th>
               <th class="px-4 py-3">Dirección</th>
@@ -32,6 +33,11 @@
             @foreach ($clientes as $client)
             <tr class="border-b dark:border-gray-700 align-middle">
               <th class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $client->id }}</th>
+              <td class="px-4 py-3">
+                @if($client->pic)
+                  <img src="{{ asset($client->pic) }}" alt="Foto de {{ $client->nombres }}" class="h-14 w-14 rounded object-cover">
+                @endif
+              </td>
               <td class="px-4 py-3">{{ $client->nombres }} {{ $client->apellido_paterno }} {{ $client->apellido_materno }}</td>
               <td class="px-4 py-3">{{ $client->correo }}</td>
               <td class="px-4 py-3">{{ $client->direccion }}</td>

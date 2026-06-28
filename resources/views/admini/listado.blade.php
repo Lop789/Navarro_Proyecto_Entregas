@@ -24,6 +24,9 @@
             <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
               {{ $admin->nombre }} {{ $admin->apellido }}
             </h3>
+            @if($admin->pic)
+              <img src="{{ asset($admin->pic) }}" alt="Foto de {{ $admin->nombre }}" class="my-3 h-24 w-24 rounded object-cover">
+            @endif
             <span class="text-gray-500 dark:text-gray-400">{{ $admin->rol ?? 'Administrador' }}</span>
             <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">{{ $admin->telefono }}</p>
             <ul class="flex space-x-4 sm:mt-0">

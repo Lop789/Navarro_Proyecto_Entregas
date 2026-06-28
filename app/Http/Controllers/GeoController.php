@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 
 class GeoController extends Controller
 {
-    //
     public function index()
     {
         return view('geo.index');
@@ -15,18 +14,43 @@ class GeoController extends Controller
 
     public function reverse(Request $request)
     {
-        $latitude = $request->input('latitude');
-        $longitude = $request->input('longitude');
+        $data = $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
 
-        // Aquí puedes implementar la lógica para realizar la geocodificación inversa
-        // utilizando una API de geocodificación inversa, como Google Maps Geocoding API.
+        $latitude = $data['latitude'];
+        $longitude = $data['longitude'];
 
-        // Por ejemplo, podrías hacer una solicitud HTTP a la API y obtener la dirección correspondiente
-        // a las coordenadas proporcionadas.
+        $location = Http::withHeaders([
+            'User-Agent' => 'HuellaEco/1.0',
+        ])->get('https://nominatim.openstreetmap.org/reverse', [
+            'format' => 'jsonv2',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'accept-language' => 'es',
+        ])->json();
 
-        // Luego, puedes retornar la dirección obtenida como respuesta.
+        $weather = Http::get('https://api.open-meteo.com/v1/forecast', [
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'current' => 'temperature_2m,relative_humidity_2m,precipitation,rain',
+            'timezone' => 'auto',
+        ])->json();
+
+        $address = $location['address'] ?? [];
+        $current = $weather['current'] ?? [];
+
         return response()->json([
-            'address' => 'Dirección obtenida a partir de las coordenadas: ' . $latitude . ', ' . $longitude
+            'ciudad' => $address['city'] ?? $address['town'] ?? $address['village'] ?? 'No disponible',
+            'estado' => $address['state'] ?? 'No disponible',
+            'pais' => $address['country'] ?? 'No disponible',
+            'temperatura' => $current['temperature_2m'] ?? null,
+            'humedad' => $current['relative_humidity_2m'] ?? null,
+            'lluvia' => $current['rain'] ?? $current['precipitation'] ?? null,
+            'zona_horaria' => $weather['timezone'] ?? 'No disponible',
+            'latitud' => $latitude,
+            'longitud' => $longitude,
         ]);
     }
 }

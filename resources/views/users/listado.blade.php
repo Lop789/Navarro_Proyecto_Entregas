@@ -23,6 +23,7 @@
               <th class="px-4 py-3">Correo</th>
               <th class="px-4 py-3">Verificado</th>
               <th class="px-4 py-3">Creado</th>
+              <th class="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -33,10 +34,23 @@
                 <td class="px-4 py-3">{{ $user->email }}</td>
                 <td class="px-4 py-3">{{ $user->email_verified_at ?? 'Sin verificar' }}</td>
                 <td class="px-4 py-3">{{ $user->created_at }}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center justify-end gap-4">
+                    <a href="{{ url('/users/'.$user->id.'/show') }}" class="hover:underline">Mostrar</a>
+                    <a href="{{ url('/users/'.$user->id.'/edit') }}" class="hover:underline text-blue-500">Editar</a>
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->esMaster())
+                      <form action="{{ url('/users/'.$user->id) }}" method="POST" onsubmit="return confirm('¿Eliminar?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
+                      </form>
+                    @endif
+                  </div>
+                </td>
               </tr>
             @empty
               <tr>
-                <td class="px-4 py-3" colspan="5">No hay usuarios registrados.</td>
+                <td class="px-4 py-3" colspan="6">No hay usuarios registrados.</td>
               </tr>
             @endforelse
           </tbody>

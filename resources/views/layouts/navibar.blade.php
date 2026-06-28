@@ -101,6 +101,12 @@
     </li>
 
     <li class="py-2">
+      <a href="/geo" class="block py-2 px-3 text-[#cfeedd] hover:text-[#90EE90]">
+        Geo
+      </a>
+    </li>
+
+    <li class="py-2">
   @if(auth('admin')->check())
 
   <form method="POST" action="{{ route('logout') }}">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Administrador;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AdministradorController extends Controller
@@ -14,9 +15,19 @@ class AdministradorController extends Controller
         return view('admini.listado', compact('administradores'));
     }
 
+    public function listado()
+    {
+        return $this->index();
+    }
+
     public function create()
     {
         return view('admini.form');
+    }
+
+    public function formulario()
+    {
+        return view('admini.formulario');
     }
 
     public function store(Request $req)
@@ -37,6 +48,7 @@ class AdministradorController extends Controller
         }
 
         $input = $req->except(['_token', '_method', 'pic']);
+        $input['contrasena'] = Hash::make($req->contrasena);
 
         $destinationPath = public_path('imagenes/administradores');
         if (!file_exists($destinationPath)) {
@@ -67,16 +79,20 @@ class AdministradorController extends Controller
     {
         $admin = Administrador::findOrFail($id);
 
-        $req->validate([
+        $validator = Validator::make($req->all(), [
             'nombre'    => 'required',
             'apellido'  => 'required',
             'telefono'  => 'required',
-            'correo'    => 'required',
+            'correo'    => 'required|email|unique:administradores,correo,' . $admin->id,
             'estado'    => 'required',
             'rol'       => 'required|in:master,base',
             'contrasena'=> 'required',
             'pic'       => 'nullable|image'
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         $admin->nombre    = $req->nombre;
         $admin->apellido  = $req->apellido;
@@ -84,7 +100,7 @@ class AdministradorController extends Controller
         $admin->correo    = $req->correo;
         $admin->estado    = $req->estado;
         $admin->rol       = $req->rol;
-        $admin->contrasena= $req->contrasena;
+        $admin->contrasena= Hash::make($req->contrasena);
 
         if ($req->hasFile('pic')) {
             $image           = $req->file('pic');

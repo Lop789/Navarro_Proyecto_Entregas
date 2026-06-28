@@ -14,4 +14,14 @@ class Carrito extends Model
     protected $fillable = [
         'session_id',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function detalles()
+    {
+        return $this->hasMany(CarritoDetalle::class, 'carrito_id');
+    }
 }
