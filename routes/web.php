@@ -12,15 +12,8 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/holita', function () { return view('cosas.inicio'); });
-Route::get('/yes',    function () { return view('cosas.hobbies'); });
-Route::get('/no',     function () { return view('cosas.meats'); });
-Route::get('/final',  function () { return view('cosas.myAss'); });
-Route::get('/galeria',function () { return view('cosas.galeria'); });
-Route::get('/loFlows',function () { return view('flowbite'); });
-Route::get('/app',    function () { return view('layouts.index'); });
-
 Route::get('/', function () { return redirect('/admini/index'); });
+Route::view('/flowbite', 'flowbite');
 
 Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

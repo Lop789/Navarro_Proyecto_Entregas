@@ -21,7 +21,7 @@ class ProductoController extends Controller
 
     public function create()
     {
-        return view('pro.fom');
+        return view('pro.form');
     }
 
     public function formulario()
