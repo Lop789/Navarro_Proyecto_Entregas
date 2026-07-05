@@ -1,53 +1,33 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AdministradorApiController;
+use App\Http\Controllers\Api\AdministradorAuthController;
+use App\Http\Controllers\Api\CarritoApiController;
+use App\Http\Controllers\Api\ClienteApiController;
+use App\Http\Controllers\Api\PedidoApiController;
+use App\Http\Controllers\Api\ProductoApiController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdministradorController;
-use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\ProductoController;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| Actividades 22, 23 y 24:
+| API REST del area administrativa, gestion de imagenes y token Sanctum.
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/admin/login', [AdministradorAuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/admin/perfil', [AdministradorAuthController::class, 'perfil']);
+    Route::post('/admin/logout', [AdministradorAuthController::class, 'logout']);
+
+    Route::apiResource('administradores', AdministradorApiController::class)
+        ->parameters(['administradores' => 'administrador']);
+    Route::apiResource('clientes', ClienteApiController::class);
+    Route::apiResource('productos', ProductoApiController::class);
+    Route::apiResource('pedidos', PedidoApiController::class);
+    Route::apiResource('carrito', CarritoApiController::class);
 });
-
-
-    Route::prefix('admini')->group(function () {
-        Route::get('/', [AdministradorController::class,'index']);
-        // Route::get('/create', [AdministradorController::class,'create']);
-        Route::post('/', [AdministradorController::class,'store']);
-        Route::get('/{id}', [AdministradorController::class,'show']);
-        Route::put('/{id}', [AdministradorController::class,'update']);
-        Route::delete('/{id}', [AdministradorController::class,'destroy']);
-        //Route::get('/{id}/', [AdministradorController::class,'show']);
-    });
-
-    Route::prefix('clientes')->group(function () {
-        Route::get('/', [ClienteController::class, 'index']);
-        // Route::get('/create', [ClienteController::class, 'create']);
-        Route::post('/', [ClienteController::class, 'store']);
-        Route::get('/{id}', [ClienteController::class, 'show']);
-        Route::put('/{id}', [ClienteController::class, 'update']);
-        Route::delete('/{id}', [ClienteController::class, 'destroy']);
-        // Route::get('/{id}/show', [ClienteController::class, 'show']);
-    });
-
-    Route::prefix('pro')->group(function () {
-        Route::get('/', [ProductoController::class, 'index']);
-        // Route::get('/create', [ProductoController::class, 'create']);
-        Route::post('/', [ProductoController::class, 'store']);
-        Route::get('/{id}', [ProductoController::class, 'show']);
-        Route::put('/{id}', [ProductoController::class, 'update']);
-        Route::delete('/{id}', [ProductoController::class, 'destroy']);
-        // Route::get('/{id}/show', [ProductoController::class, 'show']);
-    });
